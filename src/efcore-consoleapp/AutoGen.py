@@ -20,10 +20,12 @@ def get_input_default_fallback(field, default):
     return user_input
 
 def get_frameworks(frameworks):
-    print("Please specify the Framework to use:")
+    print("Please specify the Framework to use (defaults to 0):")
     for index, framework in enumerate(frameworks):
         print(f"{index} - {framework}")
     index = input(">")
+    if not index:
+        index = 0
     return int(index)
 
 def get_tables(tables):
