@@ -126,4 +126,26 @@ partial class Program
 
         if (product is null) Fail("No product found using Single.");
     }
+
+    private static void QueryingWithLike()
+    {
+        using NorthwindDb db = new();
+        SectionTitle("Querying with a like example");
+        Write("Enter part of a product name: ");
+        string input = ReadLine();
+        
+        // Is this analagous to the SQL LIKE command?
+        IQueryable<Product>? products = db.Products.Where(p => EF.Functions.Like(p.ProductName, $"%{input}%"));
+        if (products is null || !products.Any())
+        {
+            Info("No products found.");
+            return;
+        }
+
+        foreach (Product p in products)
+        {
+            Write($"Name: {p.ProductName}, Stock: {p.UnitsInStock}, Discontinued: {p.Discontinued}");
+        }
+        
+    }
 }

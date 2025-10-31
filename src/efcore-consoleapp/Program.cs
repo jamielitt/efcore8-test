@@ -6,3 +6,4 @@ QueryingCategories();
 FilterIncludes();
 QueryingProducts();
 GettingOneProduct();
+QueryingWithLike();
