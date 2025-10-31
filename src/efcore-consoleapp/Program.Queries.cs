@@ -80,7 +80,8 @@ partial class Program
         
         IQueryable<Product>? products = db.Products?
             .Where(p => p.UnitPrice > price)
-            .OrderByDescending(p => p.UnitPrice);
+            .OrderBy(p => p.UnitPrice)
+            .TagWith($"Products with a unit price greater than {price} ordered by the unit price");
 
         if (products is null || !products.Any())
         {
