@@ -29,7 +29,8 @@
     {
         "System",
         "System.Collections.Generic",
-        "Microsoft.EntityFrameworkCore"
+        "Microsoft.EntityFrameworkCore",
+        "Microsoft.EntityFrameworkCore.Diagnostics"
     };
 
     if (NamespaceHint != Options.ModelNamespace
@@ -90,7 +91,9 @@ public partial class <#= Options.ContextName #> : DbContext
 #>
     {
         optionsBuilder<#= code.Fragment(useProviderCall, indent: 3) #>;
-        optionsBuilder.LogTo(WriteLine)
+
+        // This can be modified by adding in the event to filter on:   
+        optionsBuilder.LogTo(WriteLine, new[] { RelationalEventId.CommandExecuting })
 #if DEBUG
             .EnableSensitiveDataLogging() // Include SQL parameters only in debug
             .EnableDetailedErrors()
