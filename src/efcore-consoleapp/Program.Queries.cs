@@ -144,7 +144,7 @@ partial class Program
 
         foreach (Product p in products)
         {
-            Write($"Name: {p.ProductName}, Stock: {p.UnitsInStock}, Discontinued: {p.Discontinued}");
+            WriteLine($"Name: {p.ProductName}, Stock: {p.UnitsInStock}, Discontinued: {p.Discontinued}");
         }
         
     }
