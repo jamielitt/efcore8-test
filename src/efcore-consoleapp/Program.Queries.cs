@@ -2,6 +2,9 @@ using efcore_consoleapp.AutoGen;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query; // To use Include method.
 
+// This is so we can use the ChangeTracker to control Lazy Loading
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 partial class Program
 {
     private static void QueryingCategories()
@@ -10,9 +13,16 @@ partial class Program
         SectionTitle("Categories and how many products they have");
       
         // A query to get all categories and their related products.
-        IIncludableQueryable<Category, ICollection<Product>>? categories 
-            = db.Categories?
-            .Include(c => c.Products);
+        IQueryable<Category>? categories;
+        
+        // Disables the Lazy Loading so we can make a choice on what to do
+        db.ChangeTracker.LazyLoadingEnabled = false;
+        
+        // Eager Loading example (loads everything in one query)
+        categories = db.Categories?.Include(c => c.Products);
+
+        // Default if no eager loading
+        //categories = db.Categories;
         
         if (categories is null || !categories.Any())
         {
@@ -23,6 +33,13 @@ partial class Program
         // Execute query and enumerate results.
         foreach (Category c in categories)
         {
+            // This is how we do explicit loading, we need this if
+            // lazy loading and eager loading is not present
+            // Comment out this section if Lazy or Eager loading is present
+            //CollectionEntry<Category, Product> products =
+            //    db.Entry(c).Collection(c2 => c2.Products);
+            //if (!products.IsLoaded) products.Load();
+            
             WriteLine($"{c.CategoryName} has {c.Products.Count} products.");
         }
     }
