@@ -49,6 +49,10 @@ public partial class NorthwindDb : DbContext
             entity.Property(e => e.UnitsOnOrder).HasDefaultValue((short)0);
         });
 
+        // A global filter to remove discontinued products. This will be applied to all queries run
+        modelBuilder.Entity<Product>()
+            .HasQueryFilter(p => !p.Discontinued);
+
         OnModelCreatingPartial(modelBuilder);
     }
 
