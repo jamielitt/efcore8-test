@@ -31,7 +31,12 @@ public partial class NorthwindDb : DbContext
             .EnableSensitiveDataLogging() // Include SQL parameters only in debug
             .EnableDetailedErrors()
 #endif
-    ;
+        ;
+
+        // Enables Lazy Loading - "but" - be careful with this as for every referenced entity
+        // where you actually want someting, it will do a round trip to the database.
+        // .Include() gets around this.. See query for example.
+        optionsBuilder.UseLazyLoadingProxies();
 }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
