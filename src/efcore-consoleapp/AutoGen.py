@@ -50,7 +50,7 @@ def generate_command(datasource, framework_index, tables, output_directory, name
     command += f"--output-dir {output_directory} "
     command += f"--namespace {namespace} "
     command += "--data-annotations "
-    command += f"--context {context}"
+    command += f"--context {context} --force"
     return command
     
 print("EF Core Autogen Tool")
