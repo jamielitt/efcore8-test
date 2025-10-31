@@ -5,3 +5,4 @@ ConfigureConsole();
 QueryingCategories();
 FilterIncludes();
 QueryingProducts();
+GettingOneProduct();

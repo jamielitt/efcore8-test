@@ -98,4 +98,32 @@ partial class Program
                 p.ProductId, p.ProductName, p.UnitPrice, p.UnitsInStock);
         }
     }
+
+    private static void GettingOneProduct()
+    {
+        using NorthwindDb db = new();
+        string? input;
+        int productId;
+        SectionTitle("Getting a single product");
+
+        do
+        {
+            Write("Enter a product id: ");
+            input =  ReadLine();
+        } while (!int.TryParse(input, out productId));
+        
+        // It doesn't matter how many records are returned with this match, only the first one
+        // will be returned
+        Product? product = db.Products?.Where(p => p.ProductId == productId).First();
+        
+        Info($"First: {product?.ProductName}");
+        if (product is null) Fail("No product found using First.");
+        
+        // Single will try and get 2 entities by using LIMIT = 2, if 2 are returned an exception is thrown.
+        product = db.Products?.Where(p => p.ProductId == productId).Single();
+        
+        Info($"Single: {product?.ProductName}");
+
+        if (product is null) Fail("No product found using Single.");
+    }
 }
