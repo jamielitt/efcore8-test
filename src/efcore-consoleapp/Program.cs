@@ -2,8 +2,11 @@
 using efcore_consoleapp.EntityModels;
 
 ConfigureConsole();
+
+// Different types of queries
 QueryingCategories();
 FilterIncludes();
 QueryingProducts();
 GettingOneProduct();
 QueryingWithLike();
+LazyLoadingWithNoTracking();
