@@ -86,6 +86,11 @@ partial class Program
     private static void QueryingProducts()
     {
         using NorthwindDb db = new();
+        
+        // This will disable tracking for the context
+        //db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        //db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;
+        
         SectionTitle("Products that cost more than a price, highest at top");
         string? input;
         double price;
@@ -96,6 +101,10 @@ partial class Program
         } while (!double.TryParse(input, out price));
         
         IQueryable<Product>? products = db.Products?
+            // .AsNoTracking ensures we get a fresh copy from the database (and not return the version
+            // that is already in context)
+            //.AsNoTracking()
+            //.AsNoTrackingWithIdentityResolution()
             .Where(p => p.UnitPrice > price)
             .OrderBy(p => p.UnitPrice)
             .TagWith($"Products with a unit price greater than {price} ordered by the unit price");
@@ -163,6 +172,22 @@ partial class Program
         {
             WriteLine($"Name: {p.ProductName}, Stock: {p.UnitsInStock}, Discontinued: {p.Discontinued}");
         }
-        
+    }
+
+    private static void LazyLoadingWithNoTracking()
+    {
+        using NorthwindDb db = new();
+        SectionTitle("Lazy Loading with no-tracking");
+        IQueryable<Product>? products = db.Products.AsNoTracking();
+
+        if (products is null || !products.Any())
+        {
+            Fail("No products found.");
+        }
+
+        foreach (Product p in products)
+        {
+            WriteLine("{0} is in Category named {1}", p.ProductName, p.Category.CategoryName);
+        }
     }
 }
