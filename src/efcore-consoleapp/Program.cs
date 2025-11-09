@@ -25,5 +25,8 @@ string startsWith = "Bob";
 var updates = IncreaseProductPriceBetter(startsWith, 20);
 ListProducts(updates.IdsUpdated);
 
+//var productsRemoved = DeleteProducts(productNameStartsWith: startsWith);
+//WriteLine($"{productsRemoved} products have been removed from the database that start with {startsWith}");
+
 var productsRemoved = DeleteProducts(productNameStartsWith: startsWith);
 WriteLine($"{productsRemoved} products have been removed from the database that start with {startsWith}");
