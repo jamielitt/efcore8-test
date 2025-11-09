@@ -55,7 +55,7 @@ partial class Program()
         WriteLine("State: {entry.State}, ProductId: {entry.ProductId}");
         return (affected, productId: p.ProductId);
     }
-
+    
     private static (int affected, int productId) IncreaseProductPrice(string productNameStartsWith, double amount)
     {
         using NorthwindDb db = new();
@@ -89,7 +89,7 @@ partial class Program()
 
         return (productsAffected, productId: product.ProductId);
     }
-
+    
     private static int DeleteProducts(string productNameStartsWith)
     {
         using NorthwindDb db = new();

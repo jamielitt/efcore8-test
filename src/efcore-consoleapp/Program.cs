@@ -20,6 +20,5 @@ ConfigureConsole();
 string startsWith = "Bob";
 var resultOfUpdate = IncreaseProductPrice(startsWith, 20);
 ListProducts(productIdsToHighlight: new[] { resultOfUpdate.productId });
-
 var productsRemoved = DeleteProducts(productNameStartsWith: startsWith);
 WriteLine($"{productsRemoved} products have been removed from the database that start with {startsWith}");
