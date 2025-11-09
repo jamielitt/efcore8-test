@@ -10,11 +10,13 @@ ConfigureConsole();
 // GettingOneProduct();
 // QueryingWithLike();
 // LazyLoadingWithNoTracking();
+// var resultAdd = AddProduct(categoryId: 6,
+//     productName: "Bob's Big Burgers", unitPrice: 500, stock: 72);
+// if (resultAdd.affected == 1)
+// {
+//     WriteLine($"Add product successful with ID: {resultAdd.productId}.");
+// }
+//ListProducts(productIdsToHighlight: new[] { resultAdd.productId });
 
-var resultAdd = AddProduct(categoryId: 6,
-    productName: "Bob's Big Burgers", unitPrice: 500, stock: 72);
-if (resultAdd.affected == 1)
-{
-    WriteLine($"Add product successful with ID: {resultAdd.productId}.");
-}
-ListProducts(productIdsToHighlight: new[] { resultAdd.productId });
+var resultOfUpdate = IncreaseProductPrice("Bob", 20);
+ListProducts(productIdsToHighlight: new[] { resultOfUpdate.productId });
