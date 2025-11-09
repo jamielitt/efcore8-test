@@ -1,6 +1,7 @@
 using efcore_consoleapp.AutoGen;
 using Microsoft.EntityFrameworkCore; // To use ExecuteUpdate, ExecuteDelete.
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Update;
 
 partial class Program()
 {
@@ -53,5 +54,32 @@ partial class Program()
         int affected = db.SaveChanges();
         WriteLine("State: {entry.State}, ProductId: {entry.ProductId}");
         return (affected, productId: p.ProductId);
+    }
+
+    private static (int affected, int productId) IncreaseProductPrice(string productNameStartsWith, double amount)
+    {
+        using NorthwindDb db = new();
+
+        SectionTitle("Increasing product price example");
+        if (db.Products is null)
+        {
+            WriteLine("No products in database");
+            return (0, 0);
+        }
+
+        Product product = db.Products
+            .First(p => p.ProductName
+                .StartsWith(productNameStartsWith));
+        
+        product.UnitPrice += amount;
+        
+        int productsAffected = db.SaveChanges();
+
+        if (productsAffected == 0)
+        {
+            WriteLine("No products affected");
+            return (0, 0);
+        }
+        return  (productsAffected, productId: product.ProductId);
     }
 }
