@@ -4,9 +4,17 @@ using efcore_consoleapp.EntityModels;
 ConfigureConsole();
 
 // Different types of queries
-QueryingCategories();
-FilterIncludes();
-QueryingProducts();
-GettingOneProduct();
-QueryingWithLike();
-LazyLoadingWithNoTracking();
+// QueryingCategories();
+// FilterIncludes();
+// QueryingProducts();
+// GettingOneProduct();
+// QueryingWithLike();
+// LazyLoadingWithNoTracking();
+
+var resultAdd = AddProduct(categoryId: 6,
+    productName: "Bob's Big Burgers", unitPrice: 500, stock: 72);
+if (resultAdd.affected == 1)
+{
+    WriteLine($"Add product successful with ID: {resultAdd.productId}.");
+}
+ListProducts(productIdsToHighlight: new[] { resultAdd.productId });
