@@ -54,4 +54,27 @@ partial class Program()
         WriteLine("State: {entry.State}, ProductId: {entry.ProductId}");
         return (affected, productId: p.ProductId);
     }
+
+    private static int DeleteProducts(string productNameStartsWith)
+    {
+        using NorthwindDb db = new();
+        SectionTitle($"Deleting all products from database that begin with {productNameStartsWith}");
+        if (db.Products is null)
+        {
+            WriteLine("No products found in the database");
+            return -1;
+        }
+
+        IQueryable<Product> products = db.Products.Where(x => x.ProductName.StartsWith(productNameStartsWith));
+
+        if (products is null || !products.Any())
+        {
+            WriteLine($"No products found in the database from search for {productNameStartsWith}");
+            return -1;
+        }
+        
+        db.Products.RemoveRange(products);
+        int affected = db.SaveChanges();
+        return affected;
+    }
 }
