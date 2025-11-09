@@ -112,4 +112,34 @@ partial class Program()
         int affected = db.SaveChanges();
         return affected;
     }
+    
+    private static (int affected, int[] IdsUpdated) IncreaseProductPriceBetter(string productNameStartsWith, double amount)
+    {
+        using NorthwindDb db = new();
+
+        SectionTitle("Increasing product price example - but better this time");
+        if (db.Products is null)
+        {
+            WriteLine("No products in database");
+            return (0, [0]);
+        }
+
+        IQueryable<Product> products = db.Products
+            .Where(p => p.ProductName.StartsWith(productNameStartsWith));
+            
+          
+        if (!products.Any())
+        {
+            Write($"Could not find any products that start with {productNameStartsWith} in database");
+            return (0, [0]);
+        }
+        
+        int productsUpdated = products.ExecuteUpdate(s => s.SetProperty(
+                p => p.UnitPrice,
+                p => p.UnitPrice + amount));
+
+        int[] productIds = products.Select(p => p.ProductId).ToArray();
+        
+        return (productsUpdated, productIds);
+    }
 }
