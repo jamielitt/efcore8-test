@@ -55,7 +55,7 @@ partial class Program()
         WriteLine("State: {entry.State}, ProductId: {entry.ProductId}");
         return (affected, productId: p.ProductId);
     }
-
+    
     private static (int affected, int productId) IncreaseProductPrice(string productNameStartsWith, double amount)
     {
         using NorthwindDb db = new();
@@ -68,11 +68,17 @@ partial class Program()
         }
 
         Product product = db.Products
-            .First(p => p.ProductName
+            .FirstOrDefault(p => p.ProductName
                 .StartsWith(productNameStartsWith));
+
+        if (product is null)
+        {
+            Write($"Could not find any products that start with {productNameStartsWith} in database");
+            return (0, 0);
+        }
         
         product.UnitPrice += amount;
-        
+
         int productsAffected = db.SaveChanges();
 
         if (productsAffected == 0)
@@ -80,6 +86,30 @@ partial class Program()
             WriteLine("No products affected");
             return (0, 0);
         }
-        return  (productsAffected, productId: product.ProductId);
+
+        return (productsAffected, productId: product.ProductId);
+    }
+    
+    private static int DeleteProducts(string productNameStartsWith)
+    {
+        using NorthwindDb db = new();
+        SectionTitle($"Deleting all products from database that begin with {productNameStartsWith}");
+        if (db.Products is null)
+        {
+            WriteLine("No products found in the database");
+            return -1;
+        }
+
+        IQueryable<Product> products = db.Products.Where(x => x.ProductName.StartsWith(productNameStartsWith));
+
+        if (products is null || !products.Any())
+        {
+            WriteLine($"No products found in the database from search for {productNameStartsWith}");
+            return -1;
+        }
+        
+        db.Products.RemoveRange(products);
+        int affected = db.SaveChanges();
+        return affected;
     }
 }

@@ -17,6 +17,8 @@ ConfigureConsole();
 //     WriteLine($"Add product successful with ID: {resultAdd.productId}.");
 // }
 //ListProducts(productIdsToHighlight: new[] { resultAdd.productId });
-
-var resultOfUpdate = IncreaseProductPrice("Bob", 20);
+string startsWith = "Bob";
+var resultOfUpdate = IncreaseProductPrice(startsWith, 20);
 ListProducts(productIdsToHighlight: new[] { resultOfUpdate.productId });
+var productsRemoved = DeleteProducts(productNameStartsWith: startsWith);
+WriteLine($"{productsRemoved} products have been removed from the database that start with {startsWith}");
